@@ -3,18 +3,19 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main # Or your default branch name
+      - main # Your default branch
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      # This is the corrected step. It now includes 'lfs: true'.
+      - name: Checkout with LFS
         uses: actions/checkout@v3
+        with:
+          lfs: true
 
-      # This is the crucial step that downloads the LFS files
-      - name: Git LFS Pull
-        run: git lfs pull
+      # The old 'run: git lfs pull' step is no longer needed.
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

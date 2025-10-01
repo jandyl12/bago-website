@@ -9,16 +9,16 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      # This is the corrected step. It now includes 'lfs: true'.
-      - name: Checkout with LFS
+      - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          lfs: true
+          lfs: true # This fetches LFS objects
 
-      # The old 'run: git lfs pull' step is no longer needed.
-
-      - name: Deploy
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./
+          # THIS IS THE CRUCIAL FIX:
+          # This tells the deployment action to pull the actual LFS files.
+          pull_lfs: true

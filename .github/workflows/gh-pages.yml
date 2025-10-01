@@ -1,24 +1,35 @@
-name: Deploy to GitHub Pages
+# Name of the workflow
+name: Deploy GitHub Pages
 
+# When the workflow will run
 on:
   push:
     branches:
-      - main # Your default branch
+      - main # Triggers on push to the main branch
 
+# A workflow run is made up of one or more jobs
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      # Step 1: Checks out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout
         uses: actions/checkout@v3
         with:
-          lfs: true # This fetches LFS objects
+          lfs: true # THIS IS THE KEY: It correctly pulls the full LFS files
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      # Step 2: This is GitHub's official action to prepare the files for deployment
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+
+      # Step 3: This action uploads your site's files as an artifact
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./
-          # THIS IS THE CRUCIAL FIX:
-          # This tells the deployment action to pull the actual LFS files.
-          pull_lfs: true
+          # Tell it to upload everything from the root directory
+          path: '.'
+
+      # Step 4: This is GitHub's official action to deploy the files to your live site
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2

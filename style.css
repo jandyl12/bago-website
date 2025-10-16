@@ -935,3 +935,9 @@ footer {
         right: 25%;
     }
 }
+/* 16. NEW STYLES FOR FALLBACK LINK */
+.facebook-fallback-link {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
